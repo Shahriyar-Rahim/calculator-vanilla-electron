@@ -1,0 +1,111 @@
+:root {
+  --bg: #1e1e2e;
+  --app-bg: #292a3e;
+  --display-bg: #20212f;
+  --text: #f4f4f8;
+  --btn-number-bg: #3a3b52;
+  --btn-function-bg: #4b4d6b;
+  --btn-operator-bg: #f0883e;
+  --btn-equals-bg: #4caf7d;
+  --btn-active: #5a5c7f;
+  --border: #45465e;
+}
+
+* {
+  box-sizing: border-box;
+  user-select: none;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  font-family: "Segoe UI", Arial, sans-serif;
+  color: var(--text);
+  display: flex;
+  justify-content: center;
+  transition:
+    background 0.25s ease,
+    color 0.25s ease;
+}
+
+.app {
+  width: 100%;
+  max-width: 380px;
+  background: var(--app-bg);
+  padding: 16px;
+  border-radius: 12px;
+  margin-top: 16px;
+  transition: background 0.25s ease;
+}
+
+.display {
+  background: var(--display-bg);
+  border-radius: 8px;
+  padding: 16px 12px;
+  text-align: right;
+  margin-bottom: 12px;
+  min-height: 72px;
+  transition: background 0.25s ease;
+}
+
+.prev-operand {
+  font-size: 14px;
+  opacity: 0.6;
+  min-height: 18px;
+}
+
+.current-operand {
+  font-size: 32px;
+  word-wrap: break-word;
+  word-break: break-all;
+}
+
+.keypad {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+
+.btn {
+  border: none;
+  border-radius: 8px;
+  padding: 16px 0;
+  font-size: 16px;
+  cursor: pointer;
+  color: var(--text);
+  background: var(--btn-number-bg);
+  transition:
+    background 0.15s ease,
+    transform 0.05s ease;
+}
+.btn.function {
+  background: var(--btn-function-bg);
+}
+.btn.operator {
+  background: var(--btn-operator-bg);
+  color: #fff;
+}
+.btn.equals {
+  background: var(--btn-equals-bg);
+  color: #fff;
+  grid-column: span 2;
+}
+.btn.zero {
+  grid-column: span 1;
+}
+
+.btn:hover {
+  filter: brightness(1.08);
+}
+.btn:active,
+.btn.pressed {
+  background: var(--btn-active);
+  transform: scale(0.96);
+}
+
+@media (max-width: 400px) {
+  .app {
+    max-width: 100%;
+    border-radius: 0;
+  }
+}

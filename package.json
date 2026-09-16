@@ -1,0 +1,23 @@
+{
+  "name": "calculator-vanilla",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron --no-sandbox --disable-gpu --ozone-platform=x11 --log-level=3 .",
+    "package-win": "electron-packager . ScientificCalculator --platform=win32 --arch=x64 --out=dist --overwrite",
+    "package-linux": "electron-packager . ScientificCalculator--platform=linux --arch=x64 --out=dist --overwrite"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "electron": "^44.4.1",
+    "electron-packager": "^14.2.1"
+  },
+  "dependencies": {
+    "electron-is-dev": "^3.0.1",
+    "electron-window-state": "^5.0.3"
+  }
+}
