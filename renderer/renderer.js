@@ -85,7 +85,7 @@ const PRECEDENCE = {
   "-": 1,
   "*": 2,
   "/": 2,
-  "^": 3
+  "^": 3,
 };
 
 function evaluateInfix(tokens) {
@@ -93,24 +93,32 @@ function evaluateInfix(tokens) {
   const ops = [];
 
   const applyOp = () => {
+    if (ops.length === 0 || values.length < 2) return "Error";
     const op = ops.pop();
     const b = values.pop();
     const a = values.pop();
-    if (a === undefined || b === undefined) return "Error";
 
     switch (op) {
-      case "+": values.push(a + b); break;
-      case "-": values.push(a - b); break;
-      case "*": values.push(a * b); break;
-      case "/": 
-        if (b === 0) return "Error";
-        values.push(a / b); 
+      case "+":
+        values.push(a + b);
         break;
-      case "^": 
+      case "-":
+        values.push(a - b);
+        break;
+      case "*":
+        values.push(a * b);
+        break;
+      case "/":
+        if (b === 0) return "Error";
+        values.push(a / b);
+        break;
+      case "^":
         const res = Math.pow(a, b);
         if (!isFinite(res)) return "Error";
-        values.push(res); 
+        values.push(res);
         break;
+      default:
+        return "Error";
     }
   };
 
@@ -120,9 +128,18 @@ function evaluateInfix(tokens) {
 
     if (!isNaN(num)) {
       values.push(num);
+    } else if (token === "(") {
+      ops.push(token);
+    } else if (token === ")") {
+      while (ops.length > 0 && ops[ops.length - 1] !== "(") {
+        if (applyOp() === "Error") return "Error";
+      }
+      if (ops.length === 0) return "Error";
+      ops.pop(); 
     } else if (PRECEDENCE[token]) {
       while (
         ops.length > 0 &&
+        ops[ops.length - 1] !== "(" &&
         PRECEDENCE[ops[ops.length - 1]] >= PRECEDENCE[token]
       ) {
         if (applyOp() === "Error") return "Error";
@@ -132,6 +149,8 @@ function evaluateInfix(tokens) {
   }
 
   while (ops.length > 0) {
+    if (ops[ops.length - 1] === "(" || ops[ops.length - 1] === ")")
+      return "Error";
     if (applyOp() === "Error") return "Error";
   }
 
@@ -284,6 +303,16 @@ function choseOperator(op) {
     expressionTokens = [currentInput, op];
     resultJustShown = false;
   } else {
+    if (
+      expressionTokens.length > 0 &&
+      PRECEDENCE[expressionTokens[expressionTokens.length - 1]] &&
+      currentInput === "0"
+    ) {
+      expressionTokens[expressionTokens.length - 1] = op;
+      updateDisplay();
+      playSound("operator");
+      return;
+    }
     expressionTokens.push(currentInput);
     expressionTokens.push(op);
   }
@@ -292,7 +321,6 @@ function choseOperator(op) {
   updateDisplay();
   playSound("operator");
 }
-
 function equals() {
   if (currentInput === "Error") return;
 
@@ -301,7 +329,14 @@ function equals() {
     finalTokens.push(currentInput);
   }
 
-  if (finalTokens.length < 3) return;
+  while (
+    finalTokens.length > 0 &&
+    PRECEDENCE[finalTokens[finalTokens.length - 1]]
+  ) {
+    finalTokens.pop();
+  }
+
+  if (finalTokens.length === 0) return;
 
   const result = evaluateInfix(finalTokens);
   if (result === "Error") {
