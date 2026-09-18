@@ -1,6 +1,5 @@
 let currentInput = "0";
-let previousInput = "";
-let operator = null;
+let expressionTokens = [];
 let resultJustShown = false;
 let angleMode = "DEG";
 let isMuted = false;
@@ -81,21 +80,62 @@ function toggleMute() {
   }
 }
 
-function calculate(a, op, b) {
-  a = parseFloat(a);
-  b = parseFloat(b);
+const PRECEDENCE = {
+  "+": 1,
+  "-": 1,
+  "*": 2,
+  "/": 2,
+  "^": 3
+};
 
-  switch (op) {
-    case "+": return a + b;
-    case "-": return a - b;
-    case "*": return a * b;
-    case "/": return b === 0 ? "Error" : a / b;
-    case "^": {
-      const result = Math.pow(a, b);
-      return isFinite(result) ? result : "Error";
+function evaluateInfix(tokens) {
+  const values = [];
+  const ops = [];
+
+  const applyOp = () => {
+    const op = ops.pop();
+    const b = values.pop();
+    const a = values.pop();
+    if (a === undefined || b === undefined) return "Error";
+
+    switch (op) {
+      case "+": values.push(a + b); break;
+      case "-": values.push(a - b); break;
+      case "*": values.push(a * b); break;
+      case "/": 
+        if (b === 0) return "Error";
+        values.push(a / b); 
+        break;
+      case "^": 
+        const res = Math.pow(a, b);
+        if (!isFinite(res)) return "Error";
+        values.push(res); 
+        break;
     }
-    default: return;
+  };
+
+  for (let i = 0; i < tokens.length; i++) {
+    const token = tokens[i];
+    const num = parseFloat(token);
+
+    if (!isNaN(num)) {
+      values.push(num);
+    } else if (PRECEDENCE[token]) {
+      while (
+        ops.length > 0 &&
+        PRECEDENCE[ops[ops.length - 1]] >= PRECEDENCE[token]
+      ) {
+        if (applyOp() === "Error") return "Error";
+      }
+      ops.push(token);
+    }
   }
+
+  while (ops.length > 0) {
+    if (applyOp() === "Error") return "Error";
+  }
+
+  return values.length === 1 ? cleanFloat(values[0]) : "Error";
 }
 
 function toRadians(value) {
@@ -210,14 +250,13 @@ function updateDisplay() {
   if (angleModeEl) angleModeEl.textContent = angleMode;
   if (currentOperandEl) currentOperandEl.textContent = currentInput;
   if (prevOperandEl) {
-    prevOperandEl.textContent = previousInput && operator ? `${previousInput} ${operator}` : "";
+    prevOperandEl.textContent = expressionTokens.join(" ");
   }
 }
 
 function setError() {
   currentInput = "Error";
-  previousInput = "";
-  operator = null;
+  expressionTokens = [];
   resultJustShown = true;
   updateDisplay();
   playSound("error");
@@ -240,37 +279,41 @@ function inputNumber(num) {
 
 function choseOperator(op) {
   if (currentInput === "Error") return;
-  if (previousInput !== "" && operator && !resultJustShown) {
-    const calcResult = calculate(previousInput, operator, currentInput);
-    if (calcResult === "Error") {
-      setError();
-      return;
-    }
-    previousInput = calcResult.toString();
+
+  if (resultJustShown) {
+    expressionTokens = [currentInput, op];
+    resultJustShown = false;
   } else {
-    previousInput = currentInput;
+    expressionTokens.push(currentInput);
+    expressionTokens.push(op);
   }
 
-  operator = op;
   currentInput = "0";
-  resultJustShown = false;
   updateDisplay();
   playSound("operator");
 }
 
 function equals() {
-  if (operator === null || currentInput === "Error") return;
-  const result = calculate(previousInput, operator, currentInput);
-  const expression = `${previousInput} ${operator} ${currentInput}`;
+  if (currentInput === "Error") return;
+
+  let finalTokens = [...expressionTokens];
+  if (!resultJustShown) {
+    finalTokens.push(currentInput);
+  }
+
+  if (finalTokens.length < 3) return;
+
+  const result = evaluateInfix(finalTokens);
   if (result === "Error") {
     setError();
     return;
   }
 
+  const expression = finalTokens.join(" ");
   addToHistory(expression, result.toString());
+
   currentInput = result.toString();
-  previousInput = "";
-  operator = null;
+  expressionTokens = [];
   resultJustShown = true;
   updateDisplay();
   playSound("result");
@@ -278,8 +321,7 @@ function equals() {
 
 function clearAll() {
   currentInput = "0";
-  previousInput = "";
-  operator = null;
+  expressionTokens = [];
   resultJustShown = false;
   updateDisplay();
   playSound("operator");
@@ -563,7 +605,6 @@ document.addEventListener("keyup", (e) => {
   }
   if (selector) releaseVisual(selector);
 });
-
 
 document.querySelector(".keypad")?.addEventListener("click", (e) => {
   const btn = e.target.closest("button");
