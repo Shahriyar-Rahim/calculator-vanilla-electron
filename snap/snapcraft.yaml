@@ -1,55 +1,36 @@
-name: Continuous Integration & Release
+name: scientific-calculator
+title: Scientific Calculator
+version: '1.0.1'
+summary: Native lightweight scientific calculator desktop app
+description: |
+  A native scientific calculator featuring precision math evaluation,
+  trigonometric functions, bracket parsing, and persistent history.
 
-on:
-  push:
-    tags:
-      - 'v*'
+type: app          # Explicitly required in Snapcraft 9+
+base: core22
+grade: stable
+confinement: strict
 
-jobs:
-  build-and-release:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
+icon: snap/gui/icon.png
 
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
+contact: https://github.com/Shahriyar-Rahim
+website: https://github.com/Shahriyar-Rahim
+license: ISC
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: 'npm'
+apps:
+  scientific-calculator:
+    command: ScientificCalculator --no-sandbox
+    extensions: [gnome]
+    plugs:
+      - desktop
+      - desktop-legacy
+      - x11
+      - wayland
+      - audio-playback
 
-      - name: Install Dependencies
-        run: npm ci
-
-      - name: Build Electron App & .deb Installer
-        run: npm run make
-
-      - name: Create GitHub Release & Attach Binaries
-        uses: softprops/action-gh-release@v1
-        with:
-          files: |
-            out/make/deb/x64/*.deb
-            out/make/zip/linux/x64/*.zip
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-  publish-snap:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
-
-      - name: Build Snap Package
-        uses: snapcore/action-build@v1
-        id: snapcraft
-
-      - name: Upload to Canonical Snap Store
-        uses: snapcore/action-publish@v1
-        env:
-          SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.SNAPCRAFT_STORE_CREDENTIALS }}
-        with:
-          snap: ${{ steps.snapcraft.outputs.snap }}
-          release: stable
+parts:
+  app:
+    plugin: dump
+    source: ./out/ScientificCalculator-linux-x64
+    organize:
+      '*': /
