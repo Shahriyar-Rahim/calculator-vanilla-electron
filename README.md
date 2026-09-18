@@ -14,7 +14,7 @@ A native, lightweight, and feature-rich scientific calculator built with **Elect
 | :---: | :---: |
 | ![Light Mode](/assets//light.png) | ![Dark Mode](/assets/dark.png) |
 
-> *Replace these placeholders with your actual screenshots located in `assets/` or hosted online.*
+> *Sample picture after a successfull trial*
 
 ---
 
