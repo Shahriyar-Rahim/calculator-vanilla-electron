@@ -1,6 +1,6 @@
 name: scientific-calculator
 title: Scientific Calculator
-version: '1.0.1'
+version: '1.0.2'
 summary: Native lightweight scientific calculator desktop app
 description: |
   A native scientific calculator featuring precision math evaluation,
