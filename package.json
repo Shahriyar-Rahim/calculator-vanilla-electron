@@ -1,6 +1,6 @@
 {
   "name": "scientific_calculator",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Native lightweight scientific calculator desktop app built with Electron.",
   "main": "main.js",
   "scripts": {

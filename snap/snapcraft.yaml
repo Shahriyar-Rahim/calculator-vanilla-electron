@@ -1,6 +1,6 @@
 name: scientific-calculator
 title: Scientific Calculator
-version: '1.0.2'
+version: '1.0.3'
 summary: Native lightweight scientific calculator desktop app
 description: |
   A native scientific calculator featuring precision math evaluation,
@@ -20,6 +20,7 @@ license: ISC
 apps:
   scientific-calculator:
     command: ScientificCalculator --no-sandbox
+    desktop: snap/gui/scientific-calculator.desktop
     extensions: [gnome]
     plugs:
       - desktop
@@ -27,6 +28,8 @@ apps:
       - x11
       - wayland
       - audio-playback
+      - network # Suppresses NETLINK socket & portal errors
+      - process-control # Clears renderer OOM score warnings
 
 parts:
   app:
