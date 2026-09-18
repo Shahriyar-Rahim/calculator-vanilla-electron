@@ -171,6 +171,48 @@ function cleanFloat(num) {
   return Math.round(num * 1e12) / 1e12;
 }
 
+function openParen() {
+  if (currentInput === "Error") return;
+
+  if (currentInput !== "0" && !resultJustShown) {
+    expressionTokens.push(currentInput);
+    expressionTokens.push("*");
+  } else if (resultJustShown) {
+    expressionTokens = [];
+    resultJustShown = false;
+  }
+
+  expressionTokens.push("(");
+  currentInput = "0";
+  updateDisplay();
+  playSound("operator");
+}
+
+function closeParen() {
+  if (currentInput === "Error" || expressionTokens.length === 0) return;
+
+  if (currentInput !== "0" || !expressionTokens.includes("(")) {
+    expressionTokens.push(currentInput);
+  }
+
+  expressionTokens.push(")");
+  currentInput = "0";
+  updateDisplay();
+  playSound("operator");
+}
+
+function toggleSign() {
+  if (currentInput === "Error" || currentInput === "0") return;
+
+  if (currentInput.startsWith("-")) {
+    currentInput = currentInput.slice(1);
+  } else {
+    currentInput = "-" + currentInput;
+  }
+  updateDisplay();
+  playSound("number");
+}
+
 function safeTrig(fn, value) {
   const rad = toRadians(value);
   if (fn === "tan" && Math.abs(Math.cos(rad)) < 1e-10) return "Error";
@@ -532,6 +574,8 @@ const actionMap = {
   equals,
   backspace: deleteLastDigit,
   "toggle-shift": toggleShiftMode,
+  "open-paren": openParen,
+  "close-paren": closeParen,
   add: () => choseOperator("+"),
   subtract: () => choseOperator("-"),
   multiply: () => choseOperator("*"),
@@ -562,6 +606,8 @@ const keyToButtonSelector = {
   "*": '[data-action="multiply"]',
   "/": '[data-action="divide"]',
   "^": '[data-action="power"]',
+  "(": '[data-action="open-paren"]',
+  ")": '[data-action="close-paren"]',
   Enter: '[data-action="equals"]',
   "=": '[data-action="equals"]',
   Escape: '[data-action="clear"]',
