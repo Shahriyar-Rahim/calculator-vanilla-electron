@@ -15,6 +15,9 @@ const angleModeEl = document.getElementById("angleMode");
 const themeToggleBtn = document.getElementById("theme-toggle");
 const muteToggleBtn = document.getElementById("muteToggle");
 const btnShift = document.getElementById("btnShift");
+const modalEl = document.getElementById("keybindingsModal");
+const closeModalBtn = document.getElementById("closeModalBtn");
+const gotItBtn = document.getElementById("gotItBtn");
 
 const btnSin = document.getElementById("btnSin");
 const btnCos = document.getElementById("btnCos");
@@ -23,6 +26,37 @@ const btnSquare = document.getElementById("btnSquare");
 const btnSqrt = document.getElementById("btnSqrt");
 const btnPower = document.getElementById("btnPower");
 const btnLog = document.getElementById("btnLog");
+
+function showKeybindingsModal() {
+  if (modalEl) modalEl.classList.add("active");
+}
+
+function hideKeybindingsModal() {
+  if (modalEl) modalEl.classList.remove("active");
+  localStorage.setItem("calc-first-run-seen", "true");
+}
+
+function checkFirstRun() {
+  const hasSeenModal = localStorage.getItem("calc-first-run-seen");
+  if (!hasSeenModal) {
+    showKeybindingsModal();
+  }
+}
+
+closeModalBtn?.addEventListener("click", hideKeybindingsModal);
+gotItBtn?.addEventListener("click", hideKeybindingsModal);
+
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape" && modalEl?.classList.contains("active")) {
+    hideKeybindingsModal();
+  }
+});
+
+modalEl?.addEventListener("click", (e) => {
+  if (e.target === modalEl) {
+    hideKeybindingsModal();
+  }
+});
 
 function toggleShiftMode() {
   isShiftMode = !isShiftMode;
@@ -889,3 +923,4 @@ loadTheme();
 loadMuteState();
 renderHistory();
 updateDisplay();
+checkFirstRun();

@@ -73,6 +73,27 @@
       <div class="history-list" id="historyList"></div>
       <button id="clearHistory" class="btn-clear-history">Clear History</button>
     </div>
+
+    <div class="modal-overlay" id="keybindingsModal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>⌨️ Keyboard Shortcuts</h2>
+          <button id="closeModalBtn" class="icon-btn">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="shortcut-row"><span>Numbers & Decimals</span><kbd>0 - 9</kbd> / <kbd>.</kbd></div>
+          <div class="shortcut-row"><span>Basic Operators</span><kbd>+</kbd> <kbd>-</kbd> <kbd>*</kbd> <kbd>/</kbd></div>
+          <div class="shortcut-row"><span>Calculate Result</span><kbd>Enter</kbd> or <kbd>=</kbd></div>
+          <div class="shortcut-row"><span>Clear Display</span><kbd>Esc</kbd></div>
+          <div class="shortcut-row"><span>Backspace</span><kbd>Backspace</kbd></div>
+          <div class="shortcut-row"><span>Trig (sin / cos / tan)</span><kbd>S</kbd> / <kbd>C</kbd> / <kbd>T</kbd></div>
+          <div class="shortcut-row"><span>Square Root / Power</span><kbd>R</kbd> / <kbd>^</kbd></div>
+          <div class="shortcut-row"><span>Toggle History Panel</span><kbd>H</kbd></div>
+          <div class="shortcut-row"><span>Copy / Paste Result</span><kbd>Ctrl + C</kbd> / <kbd>Ctrl + V</kbd></div>
+        </div>
+        <button id="gotItBtn" class="btn-got-it">Got It!</button>
+      </div>
+    </div>
     <script src="renderer.js" defer></script>
   </body>
 </html>

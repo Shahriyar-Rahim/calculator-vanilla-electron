@@ -30,6 +30,7 @@ jobs:
       - name: Create GitHub Release & Attach Binaries
         uses: softprops/action-gh-release@v1
         with:
+          prerelease: ${{ contains(github.ref, '-beta') }} # Marks as Pre-release if tag has -beta
           files: |
             out/make/deb/x64/*.deb
             out/make/zip/linux/x64/*.zip
@@ -37,31 +38,32 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   publish-snap:
-      runs-on: ubuntu-latest
-      steps:
-        - name: Checkout Code
-          uses: actions/checkout@v4
-        
-        - name: Setup Node.js
-          uses: actions/setup-node@v4
-          with:
-            node-version: 22
-            cache: 'npm'
-        
-        - name: Install Dependencies
-          run: npm ci
-        
-        - name: Build Unpackaged Linux Executable
-          run: npm run package-linux
-        
-        - name: Build Snap Package
-          uses: snapcore/action-build@v1
-          id: snapcraft
-        
-        - name: Upload to Canonical Snap Store
-          uses: snapcore/action-publish@v1
-          env:
-            SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.SNAPCRAFT_STORE_CREDENTIALS }}
-          with:
-            snap: ${{ steps.snapcraft.outputs.snap }}
-            release: stable
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Build Unpackaged Linux Executable
+        run: npm run package-linux
+
+      - name: Build Snap Package
+        uses: snapcore/action-build@v1
+        id: snapcraft
+
+      - name: Upload to Canonical Snap Store
+        uses: snapcore/action-publish@v1
+        env:
+          SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.SNAPCRAFT_STORE_CREDENTIALS }}
+        with:
+          snap: ${{ steps.snapcraft.outputs.snap }}
+          # Dynamically releases to 'beta' if tag contains '-beta', otherwise 'stable'
+          release: ${{ contains(github.ref, '-beta') && 'beta' || 'stable' }}
