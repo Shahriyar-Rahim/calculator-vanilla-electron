@@ -6,7 +6,7 @@ description: |
   A native scientific calculator featuring precision math evaluation,
   trigonometric functions, bracket parsing, and persistent history.
 
-type: app          # Explicitly required in Snapcraft 9+
+type: app
 base: core22
 grade: stable
 confinement: strict
@@ -32,5 +32,6 @@ parts:
   app:
     plugin: dump
     source: ./out/ScientificCalculator-linux-x64
+    source-type: local
     organize:
       '*': /
