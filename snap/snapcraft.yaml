@@ -1,7 +1,7 @@
 name: scientific-calculator
 title: Scientific Calculator
 # version: '1.0.3'
-version: '1.1.0-beta.1'
+version: "1.1.0-beta.1"
 summary: Native lightweight scientific calculator desktop app
 description: |
   A native scientific calculator featuring precision math evaluation,
@@ -10,7 +10,7 @@ description: |
 type: app
 base: core22
 # grade: stable
-grade: decompressed
+grade: devel
 confinement: strict
 
 icon: snap/gui/icon.png
@@ -39,4 +39,4 @@ parts:
     source: ./out/ScientificCalculator-linux-x64
     source-type: local
     organize:
-      '*': /
+      "*": /
