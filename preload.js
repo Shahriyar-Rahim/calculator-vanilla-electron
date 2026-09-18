@@ -1,6 +1,6 @@
-const { contextBridge, clipboard } = require("electron");
+const { contextBridge, ipcRenderer } = require("electron");
 
-contextBridge.exposeInMainWorld('electronApi', {
-    copyToClipboard: (text) => clipboard.writeText(text),
-    readFromClipboard: () => clipboard.readText
-})
+contextBridge.exposeInMainWorld("electronApi", {
+  copyToClipboard: (text) => ipcRenderer.invoke("copy-to-clipboard", text),
+  readFromClipboard: () => ipcRenderer.invoke("read-from-clipboard"),
+});

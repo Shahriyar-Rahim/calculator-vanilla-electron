@@ -11,40 +11,95 @@
   --border: #45465e;
 }
 
+body.light {
+  --bg: #eef0f5;
+  --app-bg: #ffffff;
+  --display-bg: #f4f5f9;
+  --text: #202124;
+  --btn-number-bg: #e8e9f0;
+  --btn-function-bg: #d8dae5;
+  --btn-operator-bg: #f0883e;
+  --btn-equals-bg: #4caf7d;
+  --btn-active: #c7c9d8;
+  --border: #d0d2dd;
+}
+
 * {
   box-sizing: border-box;
   user-select: none;
 }
 
+html,
 body {
+  width: 100%;
+  height: 100%;
   margin: 0;
-  background: var(--bg);
-  font-family: "Segoe UI", Arial, sans-serif;
+  padding: 0;
+  overflow: hidden; /* Prevents web scrollbars inside electron window */
+  background: var(--app-bg);
+  font-family: "Segoe UI", system-ui, sans-serif;
   color: var(--text);
-  display: flex;
-  justify-content: center;
   transition:
     background 0.25s ease,
     color 0.25s ease;
 }
 
+/* Native App Viewport Container */
 .app {
+  position: relative;
   width: 100%;
-  max-width: 380px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 12px;
   background: var(--app-bg);
-  padding: 16px;
-  border-radius: 12px;
-  margin-top: 16px;
-  transition: background 0.25s ease;
 }
 
+/* Fixed Top Bar Layout */
+.top-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  flex-shrink: 0;
+}
+
+.icon-btn {
+  background: transparent;
+  border: none;
+  color: var(--text);
+  font-size: 16px;
+  cursor: pointer;
+  padding: 6px 8px;
+  border-radius: 6px;
+  transition: background 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-btn:hover {
+  background: var(--btn-number-bg);
+}
+
+.angle-mode {
+  font-size: 13px;
+  font-weight: 600;
+  opacity: 0.8;
+  margin-right: auto; /* Pushes utility buttons to the right */
+}
+
+/* Dynamic Height Display */
 .display {
   background: var(--display-bg);
   border-radius: 8px;
-  padding: 16px 12px;
+  padding: 12px;
   text-align: right;
   margin-bottom: 12px;
-  min-height: 72px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  flex-grow: 1; /* Fills available vertical space */
   transition: background 0.25s ease;
 }
 
@@ -56,20 +111,23 @@ body {
 
 .current-operand {
   font-size: 32px;
+  font-weight: 500;
   word-wrap: break-word;
   word-break: break-all;
 }
 
+/* Keypad Grid */
 .keypad {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 8px;
+  flex-shrink: 0;
 }
 
 .btn {
   border: none;
   border-radius: 8px;
-  padding: 16px 0;
+  padding: 14px 0;
   font-size: 16px;
   cursor: pointer;
   color: var(--text);
@@ -78,34 +136,89 @@ body {
     background 0.15s ease,
     transform 0.05s ease;
 }
+
 .btn.function {
   background: var(--btn-function-bg);
 }
+
 .btn.operator {
   background: var(--btn-operator-bg);
   color: #fff;
 }
+
 .btn.equals {
   background: var(--btn-equals-bg);
   color: #fff;
-  grid-column: span 2;
-}
-.btn.zero {
   grid-column: span 1;
+}
+
+.btn[data-action="backspace"] {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.btn.mode-btn {
+  background: var(--btn-operator-bg);
+  color: #ffffff;
+  font-weight: bold;
+}
+
+.btn.mode-btn.active-mode {
+  background: #e06c1b;
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.4);
 }
 
 .btn:hover {
   filter: brightness(1.08);
 }
+
 .btn:active,
 .btn.pressed {
   background: var(--btn-active);
   transform: scale(0.96);
 }
 
-@media (max-width: 400px) {
-  .app {
-    max-width: 100%;
-    border-radius: 0;
-  }
+/* Edge-to-Edge History Panel Drawer */
+.history-panel {
+  position: absolute;
+  top: 0;
+  right: -100%;
+  width: 100%;
+  height: 100%;
+  background: var(--app-bg);
+  border-left: 1px solid var(--border);
+  padding: 16px;
+  transition: right 0.25s ease;
+  overflow-y: auto;
+  z-index: 10;
+}
+
+.history-panel.open {
+  right: 0;
+}
+
+.history-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  font-weight: bold;
+}
+
+.history-item {
+  background: var(--display-bg);
+  border-radius: 6px;
+  padding: 10px;
+  margin-bottom: 8px;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.history-item .expr {
+  opacity: 0.6;
+}
+
+.history-item .result {
+  font-size: 16px;
+  font-weight: 600;
 }

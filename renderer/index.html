@@ -9,11 +9,9 @@
   <body>
     <div class="app" id="app">
       <div class="top-bar">
-        <button id="theme-toggle" class="icon-btn" title="Toggle Theme">
-          🌙
-        </button>
+        <button id="theme-toggle" class="icon-btn" title="Toggle Theme">🌙</button>
         <span class="angle-mode" id="angleMode">DEG</span>
-        <button id="muteToggle" class="icon-btn" title="Mute">🔇</button>
+        <button id="muteToggle" class="icon-btn" title="Mute State">🔉</button>
         <button id="historyToggle" class="icon-btn" title="History">🕙</button>
       </div>
 
@@ -24,44 +22,45 @@
 
       <div class="keypad">
         <!-- Row 1 -->
+        <button class="btn function mode-btn" data-action="toggle-shift" id="btnShift">Shift</button>
         <button class="btn function" data-action="clear">C</button>
-        <button class="btn function" data-action="deg-rad">DEG</button>
-        <button class="btn function" data-action="sqrt">√x</button>
+        <button class="btn function" data-action="backspace" title="Backspace">⌫</button>
         <button class="btn operator" data-action="divide">÷</button>
 
         <!-- Row 2 -->
-        <button class="btn function" data-action="square">x²</button>
-        <button class="btn function" data-action="power">x^y</button>
-        <button class="btn function" data-action="log">log</button>
+        <button class="btn function" data-action="sqrt" id="btnSqrt">√x</button>
+        <button class="btn function" data-action="square" id="btnSquare">x²</button>
+        <button class="btn function" data-action="power" id="btnPower">x^y</button>
         <button class="btn operator" data-action="multiply">×</button>
 
         <!-- Row 3 -->
+        <button class="btn function" data-action="sin" id="btnSin">sin</button>
         <button class="btn number" data-number="7">7</button>
         <button class="btn number" data-number="8">8</button>
         <button class="btn number" data-number="9">9</button>
-        <button class="btn operator" data-action="subtract">-</button>
 
         <!-- Row 4 -->
+        <button class="btn function" data-action="cos" id="btnCos">cos</button>
         <button class="btn number" data-number="4">4</button>
         <button class="btn number" data-number="5">5</button>
         <button class="btn number" data-number="6">6</button>
-        <button class="btn operator" data-action="add">+</button>
 
         <!-- Row 5 -->
+        <button class="btn function" data-action="tan" id="btnTan">tan</button>
         <button class="btn number" data-number="1">1</button>
         <button class="btn number" data-number="2">2</button>
         <button class="btn number" data-number="3">3</button>
-        <button class="btn function" data-action="sin">sin</button>
 
         <!-- Row 6 -->
-        <button class="btn number zero" data-number="0">0</button>
+        <button class="btn function" data-action="deg-rad">DEG</button>
+        <button class="btn number" data-number="0">0</button>
         <button class="btn number" data-number=".">.</button>
-        <button class="btn function" data-action="cos">cos</button>
-        <button class="btn function" data-action="tan">tan</button>
+        <button class="btn operator" data-action="subtract">-</button>
 
         <!-- Row 7 -->
-        <button class="btn function" data-action="pi">π</button>
-        <button class="btn function" data-action="copy">copy</button>
+        <button class="btn function" data-action="log" id="btnLog">log</button>
+        <button class="btn function" data-action="pi" id="btnPi">π</button>
+        <button class="btn operator" data-action="add">+</button>
         <button class="btn equals" data-action="equals">=</button>
       </div>
     </div>
@@ -71,7 +70,6 @@
         <span>History</span>
         <button id="closeHistory" class="icon-btn">&times;</button>
       </div>
-
       <div class="history-list" id="historyList"></div>
       <button id="clearHistory" class="btn-clear-history">Clear History</button>
     </div>
