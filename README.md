@@ -1,6 +1,6 @@
 # 🧮 Scientific Calculator Desktop App
 
-[![Latest Release](https://img.shields.io/github/v/release/ShahriyarRahim/scientific_calculator?label=version&color=blue)](https://github.com/ShahriyarRahim/scientific_calculator/releases)
+[![Latest Release](https://img.shields.io/github/v/release/ShahriyarRahim/scientific_calculator?label=version&color=blue)](https://github.com/ShahriyarRahim/calculator-vanilla-electron/releases)
 [![License: ISC](https://img.shields.io/badge/License-ISC-yellow.svg)](https://opensource.org/licenses/ISC)
 [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Linux-lightgrey.svg)](#)
 
