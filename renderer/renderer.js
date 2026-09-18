@@ -29,27 +29,69 @@ function toggleShiftMode() {
   if (btnShift) btnShift.classList.toggle("active-mode", isShiftMode);
 
   if (isShiftMode) {
-    if (btnSin) { btnSin.textContent = "sin⁻¹"; btnSin.dataset.action = "asin"; }
-    if (btnCos) { btnCos.textContent = "cos⁻¹"; btnCos.dataset.action = "acos"; }
-    if (btnTan) { btnTan.textContent = "tan⁻¹"; btnTan.dataset.action = "atan"; }
-    if (btnSquare) { btnSquare.textContent = "|x|"; btnSquare.dataset.action = "abs"; }
-    if (btnSqrt) { btnSqrt.textContent = "d/dx"; btnSqrt.dataset.action = "diff"; }
-    if (btnPower) { btnPower.textContent = "∫dx"; btnPower.dataset.action = "integ"; }
-    if (btnLog) { btnLog.textContent = "∑"; btnLog.dataset.action = "sum"; }
+    if (btnSin) {
+      btnSin.textContent = "sin⁻¹";
+      btnSin.dataset.action = "asin";
+    }
+    if (btnCos) {
+      btnCos.textContent = "cos⁻¹";
+      btnCos.dataset.action = "acos";
+    }
+    if (btnTan) {
+      btnTan.textContent = "tan⁻¹";
+      btnTan.dataset.action = "atan";
+    }
+    if (btnSquare) {
+      btnSquare.textContent = "|x|";
+      btnSquare.dataset.action = "abs";
+    }
+    if (btnSqrt) {
+      btnSqrt.textContent = "d/dx";
+      btnSqrt.dataset.action = "diff";
+    }
+    if (btnPower) {
+      btnPower.textContent = "∫dx";
+      btnPower.dataset.action = "integ";
+    }
+    if (btnLog) {
+      btnLog.textContent = "∑";
+      btnLog.dataset.action = "sum";
+    }
   } else {
-    if (btnSin) { btnSin.textContent = "sin"; btnSin.dataset.action = "sin"; }
-    if (btnCos) { btnCos.textContent = "cos"; btnCos.dataset.action = "cos"; }
-    if (btnTan) { btnTan.textContent = "tan"; btnTan.dataset.action = "tan"; }
-    if (btnSquare) { btnSquare.textContent = "x²"; btnSquare.dataset.action = "square"; }
-    if (btnSqrt) { btnSqrt.textContent = "√x"; btnSqrt.dataset.action = "sqrt"; }
-    if (btnPower) { btnPower.textContent = "x^y"; btnPower.dataset.action = "power"; }
-    if (btnLog) { btnLog.textContent = "log"; btnLog.dataset.action = "log"; }
+    if (btnSin) {
+      btnSin.textContent = "sin";
+      btnSin.dataset.action = "sin";
+    }
+    if (btnCos) {
+      btnCos.textContent = "cos";
+      btnCos.dataset.action = "cos";
+    }
+    if (btnTan) {
+      btnTan.textContent = "tan";
+      btnTan.dataset.action = "tan";
+    }
+    if (btnSquare) {
+      btnSquare.textContent = "x²";
+      btnSquare.dataset.action = "square";
+    }
+    if (btnSqrt) {
+      btnSqrt.textContent = "√x";
+      btnSqrt.dataset.action = "sqrt";
+    }
+    if (btnPower) {
+      btnPower.textContent = "x^y";
+      btnPower.dataset.action = "power";
+    }
+    if (btnLog) {
+      btnLog.textContent = "log";
+      btnLog.dataset.action = "log";
+    }
   }
   playSound("operator");
 }
 
 function loadTheme() {
-  const savedTheme = localStorage.getItem("calc-theme") || "dark";
+  const savedTheme = localStorage.getItem("calc-theme") || "light";
   const isLight = savedTheme === "light";
   document.body.classList.toggle("light", isLight);
   if (themeToggleBtn) {
@@ -98,54 +140,84 @@ function evaluateInfix(tokens) {
     const b = values.pop();
     const a = values.pop();
 
+    let result;
     switch (op) {
       case "+":
-        values.push(a + b);
+        result = a + b;
         break;
       case "-":
-        values.push(a - b);
+        result = a - b;
         break;
       case "*":
-        values.push(a * b);
+        result = a * b;
         break;
       case "/":
         if (b === 0) return "Error";
-        values.push(a / b);
+        result = a / b;
         break;
       case "^":
-        const res = Math.pow(a, b);
-        if (!isFinite(res)) return "Error";
-        values.push(res);
+        result = Math.pow(a, b);
         break;
       default:
         return "Error";
     }
+
+    if (!Number.isFinite(result)) return "Error";
+    values.push(result);
+    return result;
   };
 
   for (let i = 0; i < tokens.length; i++) {
     const token = tokens[i];
-    const num = parseFloat(token);
+    const num = Number(token);
 
-    if (!isNaN(num)) {
+    if (token !== "" && Number.isFinite(num)) {
       values.push(num);
-    } else if (token === "(") {
+      continue;
+    }
+
+    if (token === "(") {
       ops.push(token);
-    } else if (token === ")") {
+      continue;
+    }
+
+    if (token === ")") {
       while (ops.length > 0 && ops[ops.length - 1] !== "(") {
         if (applyOp() === "Error") return "Error";
       }
       if (ops.length === 0) return "Error";
-      ops.pop(); 
-    } else if (PRECEDENCE[token]) {
+      ops.pop(); // Remove '('
+      continue;
+    }
+
+    if (Object.prototype.hasOwnProperty.call(PRECEDENCE, token)) {
+      // Unary minus fix: Pad with leading zero for negative numbers
+      if (
+        token === "-" &&
+        (i === 0 ||
+          tokens[i - 1] === "(" ||
+          Object.prototype.hasOwnProperty.call(PRECEDENCE, tokens[i - 1]))
+      ) {
+        values.push(0);
+      } // Corrected closing brace location
+
+      const isRightAssociative = token === "^";
+
       while (
         ops.length > 0 &&
         ops[ops.length - 1] !== "(" &&
-        PRECEDENCE[ops[ops.length - 1]] >= PRECEDENCE[token]
+        (PRECEDENCE[ops[ops.length - 1]] > PRECEDENCE[token] ||
+          (PRECEDENCE[ops[ops.length - 1]] === PRECEDENCE[token] &&
+            !isRightAssociative))
       ) {
         if (applyOp() === "Error") return "Error";
       }
+
       ops.push(token);
+      continue;
     }
+
+    return "Error";
   }
 
   while (ops.length > 0) {
@@ -154,7 +226,9 @@ function evaluateInfix(tokens) {
     if (applyOp() === "Error") return "Error";
   }
 
-  return values.length === 1 ? cleanFloat(values[0]) : "Error";
+  if (values.length !== 1) return "Error";
+
+  return cleanFloat(values[0]);
 }
 
 function toRadians(value) {
@@ -174,7 +248,8 @@ function cleanFloat(num) {
 function openParen() {
   if (currentInput === "Error") return;
 
-  if (currentInput !== "0" && !resultJustShown) {
+  // Auto-insert implicit multiplication if typing '(' after a finished operand
+  if (currentInput !== "0" && currentInput !== "-" && !resultJustShown) {
     expressionTokens.push(currentInput);
     expressionTokens.push("*");
   } else if (resultJustShown) {
@@ -191,12 +266,12 @@ function openParen() {
 function closeParen() {
   if (currentInput === "Error" || expressionTokens.length === 0) return;
 
-  if (currentInput !== "0" || !expressionTokens.includes("(")) {
+  if (currentInput !== "0" && currentInput !== "" && currentInput !== "-") {
     expressionTokens.push(currentInput);
+    currentInput = "0";
   }
 
   expressionTokens.push(")");
-  currentInput = "0";
   updateDisplay();
   playSound("operator");
 }
@@ -216,12 +291,14 @@ function toggleSign() {
 function safeTrig(fn, value) {
   const rad = toRadians(value);
   if (fn === "tan" && Math.abs(Math.cos(rad)) < 1e-10) return "Error";
-  const result = fn === "sin" ? Math.sin(rad) : fn === "cos" ? Math.cos(rad) : Math.tan(rad);
+  const result =
+    fn === "sin" ? Math.sin(rad) : fn === "cos" ? Math.cos(rad) : Math.tan(rad);
   return cleanFloat(result);
 }
 
 function safeInverseTrig(fn, value) {
-  if ((fn === "asin" || fn === "acos") && (value < -1 || value > 1)) return "Error";
+  if ((fn === "asin" || fn === "acos") && (value < -1 || value > 1))
+    return "Error";
   let result;
   if (fn === "asin") result = Math.asin(value);
   if (fn === "acos") result = Math.acos(value);
@@ -267,20 +344,47 @@ function applyUnary(action) {
   let result;
 
   switch (action) {
-    case "sqrt": result = value < 0 ? "Error" : Math.sqrt(value); break;
-    case "square": result = value * value; break;
-    case "log": result = value <= 0 ? "Error" : Math.log10(value); break;
-    case "sin": result = safeTrig("sin", value); break;
-    case "cos": result = safeTrig("cos", value); break;
-    case "tan": result = safeTrig("tan", value); break;
-    case "asin": result = safeInverseTrig("asin", value); break;
-    case "acos": result = safeInverseTrig("acos", value); break;
-    case "atan": result = safeInverseTrig("atan", value); break;
-    case "abs": result = Math.abs(value); break;
-    case "diff": result = differentiate(value); break;
-    case "integ": result = integrate(value); break;
-    case "sum": result = summation(value); break;
-    default: return;
+    case "sqrt":
+      result = value < 0 ? "Error" : Math.sqrt(value);
+      break;
+    case "square":
+      result = value * value;
+      break;
+    case "log":
+      result = value <= 0 ? "Error" : Math.log10(value);
+      break;
+    case "sin":
+      result = safeTrig("sin", value);
+      break;
+    case "cos":
+      result = safeTrig("cos", value);
+      break;
+    case "tan":
+      result = safeTrig("tan", value);
+      break;
+    case "asin":
+      result = safeInverseTrig("asin", value);
+      break;
+    case "acos":
+      result = safeInverseTrig("acos", value);
+      break;
+    case "atan":
+      result = safeInverseTrig("atan", value);
+      break;
+    case "abs":
+      result = Math.abs(value);
+      break;
+    case "diff":
+      result = differentiate(value);
+      break;
+    case "integ":
+      result = integrate(value);
+      break;
+    case "sum":
+      result = summation(value);
+      break;
+    default:
+      return;
   }
 
   if (result === "Error") {
@@ -341,21 +445,41 @@ function inputNumber(num) {
 function choseOperator(op) {
   if (currentInput === "Error") return;
 
+  const lastToken = expressionTokens[expressionTokens.length - 1];
+
+  if (
+    op === "-" &&
+    (currentInput === "0" || currentInput === "" || currentInput === "-") &&
+    (PRECEDENCE[lastToken] ||
+      lastToken === "(" ||
+      expressionTokens.length === 0)
+  ) {
+    currentInput = "-";
+    updateDisplay();
+    playSound("number");
+    return;
+  }
+
   if (resultJustShown) {
     expressionTokens = [currentInput, op];
     resultJustShown = false;
   } else {
+    if (currentInput !== "0" && currentInput !== "" && currentInput !== "-") {
+      expressionTokens.push(currentInput);
+    }
+
     if (
       expressionTokens.length > 0 &&
       PRECEDENCE[expressionTokens[expressionTokens.length - 1]] &&
-      currentInput === "0"
+      (currentInput === "0" || currentInput === "" || currentInput === "-")
     ) {
       expressionTokens[expressionTokens.length - 1] = op;
+      currentInput = "0";
       updateDisplay();
       playSound("operator");
       return;
     }
-    expressionTokens.push(currentInput);
+
     expressionTokens.push(op);
   }
 
@@ -363,11 +487,16 @@ function choseOperator(op) {
   updateDisplay();
   playSound("operator");
 }
-function equals() {
-  if (currentInput === "Error") return;
 
-  let finalTokens = [...expressionTokens];
-  if (!resultJustShown) {
+function prepareFinalTokens(tokens, currentInput, resultJustShown) {
+  const finalTokens = [...tokens];
+
+  if (
+    currentInput !== "" &&
+    currentInput !== "0" &&
+    currentInput !== "-" &&
+    !resultJustShown
+  ) {
     finalTokens.push(currentInput);
   }
 
@@ -378,20 +507,55 @@ function equals() {
     finalTokens.pop();
   }
 
+  if (finalTokens.length === 0) {
+    return [];
+  }
+
+  let bracketDepth = 0;
+  for (const token of finalTokens) {
+    if (token === "(") bracketDepth++;
+    else if (token === ")") bracketDepth--;
+    if (bracketDepth < 0) return null;
+  }
+
+  while (bracketDepth > 0) {
+    finalTokens.push(")");
+    bracketDepth--;
+  }
+
+  return finalTokens;
+}
+
+function equals() {
+  if (currentInput === "Error") return;
+
+  const finalTokens = prepareFinalTokens(
+    expressionTokens,
+    currentInput,
+    resultJustShown,
+  );
+  if (finalTokens === null) {
+    setError();
+    return;
+  }
+
   if (finalTokens.length === 0) return;
 
   const result = evaluateInfix(finalTokens);
+
   if (result === "Error") {
     setError();
     return;
   }
 
   const expression = finalTokens.join(" ");
+
   addToHistory(expression, result.toString());
 
   currentInput = result.toString();
   expressionTokens = [];
   resultJustShown = true;
+
   updateDisplay();
   playSound("result");
 }
@@ -442,7 +606,8 @@ function sanitizeNumeric(text) {
   let cleaned = text.replace(/[, \t\u00A0\s]/g, "").trim();
   if (cleaned.startsWith(".")) cleaned = "0" + cleaned;
   if (cleaned.startsWith("-.")) cleaned = "-0" + cleaned.slice(1);
-  const isValid = /^-?\d*\.?\d+(?:e[+-]?\d+)?$/i.test(cleaned) || /^-?\d+\.$/.test(cleaned);
+  const isValid =
+    /^-?\d*\.?\d+(?:e[+-]?\d+)?$/i.test(cleaned) || /^-?\d+\.$/.test(cleaned);
   return isValid ? cleaned : null;
 }
 
@@ -473,7 +638,9 @@ function flashCopyFeedback() {
   if (!currentOperandEl) return;
   const original = currentOperandEl.style.color;
   currentOperandEl.style.color = "#4caf7d";
-  setTimeout(() => { currentOperandEl.style.color = original; }, 200);
+  setTimeout(() => {
+    currentOperandEl.style.color = original;
+  }, 200);
 }
 
 function flashWarningFeedback() {
@@ -708,8 +875,12 @@ document.getElementById("clearHistory")?.addEventListener("click", () => {
   historyPanel?.classList.remove("open");
 });
 
-document.getElementById("historyToggle")?.addEventListener("click", () => historyPanel?.classList.toggle("open"));
-document.getElementById("closeHistory")?.addEventListener("click", () => historyPanel?.classList.remove("open"));
+document
+  .getElementById("historyToggle")
+  ?.addEventListener("click", () => historyPanel?.classList.toggle("open"));
+document
+  .getElementById("closeHistory")
+  ?.addEventListener("click", () => historyPanel?.classList.remove("open"));
 
 themeToggleBtn?.addEventListener("click", toggleTheme);
 muteToggleBtn?.addEventListener("click", toggleMute);

@@ -1,20 +1,24 @@
 {
-  "name": "calculator-vanilla",
-  "version": "1.0.0",
-  "description": "",
+  "name": "scientific_calculator",
+  "version": "1.0.1",
+  "description": "Native lightweight scientific calculator desktop app built with Electron.",
   "main": "main.js",
   "scripts": {
-    "start": "electron --no-sandbox --disable-gpu --ozone-platform=x11 --log-level=3 .",
-    "package-win": "electron-packager . ScientificCalculator --platform=win32 --arch=x64 --out=dist --overwrite",
-    "package-linux": "electron-packager . ScientificCalculator--platform=linux --arch=x64 --out=dist --overwrite"
+    "start": "electron . --no-sandbox --disable-setuid-sandbox --disable-gpu --ozone-platform=x11 --log-level=3",
+    "package-win": "electron-packager . ScientificCalculator --platform=win32 --arch=x64 --out=out --overwrite",
+    "package-linux": "electron-packager . ScientificCalculator --platform=linux --arch=x64 --out=out --overwrite",
+    "make": "electron-forge make"
   },
   "keywords": [],
-  "author": "",
+  "author": "Md. Shahriyar Rahim",
   "license": "ISC",
   "type": "commonjs",
   "devDependencies": {
-    "electron": "^44.4.1",
-    "electron-packager": "^14.2.1"
+    "@electron-forge/cli": "^7.11.2",
+    "@electron-forge/maker-deb": "^7.11.2",
+    "@electron-forge/maker-zip": "^7.11.2",
+    "electron": "^44.4.2",
+    "electron-packager": "^17.1.2"
   },
   "dependencies": {
     "electron-is-dev": "^3.0.1",
