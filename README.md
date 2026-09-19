@@ -36,7 +36,7 @@ A native, lightweight, and feature-rich scientific calculator built with **Elect
 
 ### Standard Installation
 
-1.  Go to the [Releases](https://github.com/ShahriyarRahim/scientific_calculator/releases) page.
+1.  Go to the [Releases](https://github.com/Shahriyar-Rahim/calculator-vanilla-electron/releases) page.
 2.  Download the latest version for your OS:
     - **Windows**: `.exe` installer or `.zip` portable.
     - **Linux**: `.deb` package or `.AppImage`.
@@ -174,4 +174,4 @@ This project is licensed under the **ISC License**.
 
 **Md. Shahriyar Rahim**
 
-- GitHub: [@ShahriyarRahim](https://github.com/ShahriyarRahim)
+- GitHub: [@ShahriyarRahim](https://github.com/Shahriyar-Rahim)
