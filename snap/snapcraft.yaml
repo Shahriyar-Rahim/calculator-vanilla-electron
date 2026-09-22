@@ -9,8 +9,8 @@ description: |
 
 type: app
 base: core22
-# grade: stable
-grade: devel
+grade: stable
+# grade: devel
 confinement: strict
 
 icon: snap/gui/icon.png
