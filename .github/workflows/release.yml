@@ -48,7 +48,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  # Job 2: Resilient Snap Store Publication
+  # Job 2: Snap Store Publication
   publish-snap:
     runs-on: ubuntu-latest
     steps:
@@ -67,14 +67,9 @@ jobs:
       - name: Build Unpackaged Linux Executable
         run: npm run package-linux
 
-      # Retries LXD/Snapcraft setup up to 3 times with a 15s delay to survive Canonical CDN 502s
-      - name: Build Snap Package (with CDN Failure Resilience)
-        uses: nick-fields/retry-action@v3
-        with:
-          timeout_minutes: 10
-          max_attempts: 3
-          retry_wait_seconds: 15
-          command: npx snapcore/action-build@v1
+      - name: Build Snap Package
+        uses: snapcore/action-build@v1
+        id: snapcraft
 
       - name: Upload to Canonical Snap Store
         uses: snapcore/action-publish@v1
