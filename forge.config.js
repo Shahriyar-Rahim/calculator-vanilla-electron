@@ -2,10 +2,11 @@ module.exports = {
   packagerConfig: {
     name: "Scientific Calculator",
     executableName: "scientific_calculator",
-    icon: "./assets/icon",
+    icon: "./assets/icon", // Forge automatically appends .ico, .icns, or .png depending on platform
     asar: true,
   },
   makers: [
+    // --- Linux Makers ---
     {
       name: "@electron-forge/maker-deb",
       config: {
@@ -24,7 +25,7 @@ module.exports = {
       platforms: ["linux"],
     },
 
-    // --- Windows Makers (.exe Installer & Portable Zip) ---
+    // --- Windows Makers ---
     {
       name: "@electron-forge/maker-squirrel",
       config: {
@@ -37,13 +38,13 @@ module.exports = {
       platforms: ["win32"],
     },
 
-    // --- macOS Makers (.dmg Installer & Zip) ---
+    // --- macOS Makers ---
     {
       name: "@electron-forge/maker-dmg",
       config: {
         name: "ScientificCalculator",
-        icon: "./assets/icon.icns",
         format: "ULFO",
+        // Omit icon key if icon.icns is missing to prevent ENOENT errors
       },
     },
     {
