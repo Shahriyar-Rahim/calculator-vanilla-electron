@@ -9,7 +9,9 @@
   <body>
     <div class="app" id="app">
       <div class="top-bar">
-        <button id="theme-toggle" class="icon-btn" title="Toggle Theme">🌙</button>
+        <button id="theme-toggle" class="icon-btn" title="Toggle Theme">
+          🌙
+        </button>
         <span class="angle-mode" id="angleMode">DEG</span>
         <button id="muteToggle" class="icon-btn" title="Mute State">🔉</button>
         <button id="historyToggle" class="icon-btn" title="History">🕙</button>
@@ -22,41 +24,51 @@
 
       <div class="keypad">
         <!-- Row 1 -->
-        <button class="btn function mode-btn" data-action="toggle-shift" id="btnShift">Shift</button>
+        <button
+          class="btn function mode-btn"
+          data-action="toggle-shift"
+          id="btnShift"
+        >
+          Shift
+        </button>
         <button class="btn function" data-action="clear">C</button>
-        <button class="btn function" data-action="backspace" title="Backspace">⌫</button>
+        <button class="btn function" data-action="backspace" title="Backspace">
+          ⌫
+        </button>
         <button class="btn operator" data-action="divide">÷</button>
-      
+
         <!-- Row 2: Added Brackets -->
         <button class="btn function" data-action="open-paren">(</button>
         <button class="btn function" data-action="close-paren">)</button>
-        <button class="btn function" data-action="power" id="btnPower">x^y</button>
+        <button class="btn function" data-action="power" id="btnPower">
+          x^y
+        </button>
         <button class="btn operator" data-action="multiply">×</button>
-      
+
         <!-- Row 3 -->
         <button class="btn function" data-action="sqrt" id="btnSqrt">√x</button>
         <button class="btn number" data-number="7">7</button>
         <button class="btn number" data-number="8">8</button>
         <button class="btn number" data-number="9">9</button>
-      
+
         <!-- Row 4 -->
         <button class="btn function" data-action="sin" id="btnSin">sin</button>
         <button class="btn number" data-number="4">4</button>
         <button class="btn number" data-number="5">5</button>
         <button class="btn number" data-number="6">6</button>
-      
+
         <!-- Row 5 -->
         <button class="btn function" data-action="cos" id="btnCos">cos</button>
         <button class="btn number" data-number="1">1</button>
         <button class="btn number" data-number="2">2</button>
         <button class="btn number" data-number="3">3</button>
-      
+
         <!-- Row 6 -->
         <button class="btn function" data-action="tan" id="btnTan">tan</button>
         <button class="btn number" data-number="0">0</button>
         <button class="btn number" data-number=".">.</button>
         <button class="btn operator" data-action="subtract">-</button>
-      
+
         <!-- Row 7 -->
         <button class="btn function" data-action="deg-rad">DEG</button>
         <button class="btn function" data-action="pi">π</button>
@@ -81,15 +93,36 @@
           <button id="closeModalBtn" class="icon-btn">&times;</button>
         </div>
         <div class="modal-body">
-          <div class="shortcut-row"><span>Numbers & Decimals</span><kbd>0 - 9</kbd> / <kbd>.</kbd></div>
-          <div class="shortcut-row"><span>Basic Operators</span><kbd>+</kbd> <kbd>-</kbd> <kbd>*</kbd> <kbd>/</kbd></div>
-          <div class="shortcut-row"><span>Calculate Result</span><kbd>Enter</kbd> or <kbd>=</kbd></div>
-          <div class="shortcut-row"><span>Clear Display</span><kbd>Esc</kbd></div>
-          <div class="shortcut-row"><span>Backspace</span><kbd>Backspace</kbd></div>
-          <div class="shortcut-row"><span>Trig (sin / cos / tan)</span><kbd>S</kbd> / <kbd>C</kbd> / <kbd>T</kbd></div>
-          <div class="shortcut-row"><span>Square Root / Power</span><kbd>R</kbd> / <kbd>^</kbd></div>
-          <div class="shortcut-row"><span>Toggle History Panel</span><kbd>H</kbd></div>
-          <div class="shortcut-row"><span>Copy / Paste Result</span><kbd>Ctrl + C</kbd> / <kbd>Ctrl + V</kbd></div>
+          <div class="shortcut-row">
+            <span>Numbers & Decimals</span><kbd>0 - 9</kbd> / <kbd>.</kbd>
+          </div>
+          <div class="shortcut-row">
+            <span>Basic Operators</span><kbd>+</kbd> <kbd>-</kbd> <kbd>*</kbd>
+            <kbd>/</kbd>
+          </div>
+          <div class="shortcut-row">
+            <span>Calculate Result</span><kbd>Enter</kbd> or <kbd>=</kbd>
+          </div>
+          <div class="shortcut-row">
+            <span>Clear Display</span><kbd>Esc</kbd>
+          </div>
+          <div class="shortcut-row">
+            <span>Backspace</span><kbd>Backspace</kbd>
+          </div>
+          <div class="shortcut-row">
+            <span>Trig (sin / cos / tan)</span><kbd>S</kbd> / <kbd>C</kbd> /
+            <kbd>T</kbd>
+          </div>
+          <div class="shortcut-row">
+            <span>Square Root / Power</span><kbd>R</kbd> / <kbd>^</kbd>
+          </div>
+          <div class="shortcut-row">
+            <span>Toggle History Panel</span><kbd>H</kbd>
+          </div>
+          <div class="shortcut-row">
+            <span>Copy / Paste Result</span><kbd>Ctrl + C</kbd> /
+            <kbd>Ctrl + V</kbd>
+          </div>
         </div>
         <button id="gotItBtn" class="btn-got-it">Got It!</button>
       </div>
