@@ -67,22 +67,25 @@ jobs:
       - name: Build Unpackaged Linux Executable
         run: npm run package-linux
 
-      # Retry loop to bypass Canonical CDN 502 errors when downloading LXD & Snapcraft
       - name: Install LXD and Snapcraft with CDN Retry Logic
         run: |
           for i in {1..5}; do
             echo "Attempt $i to install LXD and Snapcraft..."
-            sudo snap install lxd && sudo lxd init --auto && sudo snap install snapcraft --classic && break || sleep 10
+            sudo groupadd --force --system lxd && \
+            sudo usermod --append --groups lxd runner && \
+            sudo snap install lxd && \
+            sudo lxd init --auto && \
+            sudo snap install snapcraft --classic && break || sleep 10
           done
 
       - name: Build Snap Package
         run: |
-          sg lxd -c "snapcraft pack"
+          sudo -E snapcraft pack
 
       - name: Upload to Canonical Snap Store
         uses: snapcore/action-publish@v1
         env:
           SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.SNAPCRAFT_STORE_CREDENTIALS }}
         with:
-          snap: ${{ steps.snapcraft.outputs.snap || 'scientific-calculator_*.snap' }}
+          snap: ${{ steps.snapcraft.outputs.snap || '*.snap' }}
           release: ${{ contains(github.ref, '-beta') && 'beta' || 'stable' }}
