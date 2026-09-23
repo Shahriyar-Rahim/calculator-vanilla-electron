@@ -1,7 +1,6 @@
 name: scientific-calculator
 title: Scientific Calculator
-# version: '1.0.3'
-version: "1.1.0"
+version: '1.1.0'
 summary: Native lightweight scientific calculator desktop app
 description: |
   A native scientific calculator featuring precision math evaluation,
@@ -10,7 +9,6 @@ description: |
 type: app
 base: core22
 grade: stable
-# grade: devel
 confinement: strict
 
 icon: snap/gui/icon.png
@@ -30,13 +28,12 @@ apps:
       - x11
       - wayland
       - audio-playback
-      - network # Suppresses NETLINK socket & portal errors
-      - process-control # Clears renderer OOM score warnings
+      - network
+      - process-control
 
 parts:
   app:
-    plugin: dump
-    source: ./out/ScientificCalculator-linux-x64
-    source-type: local
-    organize:
-      "*": /
+    plugin: nil
+    override-build: |
+      mkdir -p $CRAFT_PART_INSTALL
+      cp -r $CRAFT_PROJECT_DIR/out/ScientificCalculator-linux-x64/* $CRAFT_PART_INSTALL/

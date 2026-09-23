@@ -73,6 +73,7 @@ jobs:
 
       - name: Build Snap Package
         run: |
+          sudo snapcraft clean
           sudo snapcraft pack --destructive-mode
 
       - name: Upload to Canonical Snap Store
