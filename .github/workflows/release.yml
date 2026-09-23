@@ -72,14 +72,18 @@ jobs:
           sudo snap install snapcraft --classic
 
       - name: Build Snap Package
+        id: build_snap
         run: |
           sudo snapcraft clean
           sudo snapcraft pack --destructive-mode
+          # Find the exact .snap file generated and set it as a step output
+          SNAP_FILE=$(ls *.snap | head -n 1)
+          echo "snap_file=$SNAP_FILE" >> $GITHUB_OUTPUT
 
       - name: Upload to Canonical Snap Store
         uses: snapcore/action-publish@v1
         env:
           SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.SNAPCRAFT_STORE_CREDENTIALS }}
         with:
-          snap: ${{ steps.snapcraft.outputs.snap || '*.snap' }}
+          snap: ${{ steps.build_snap.outputs.snap_file }}
           release: ${{ contains(github.ref, '-beta') && 'beta' || 'stable' }}
