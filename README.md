@@ -1,103 +1,81 @@
-# 🧮 Scientific Calculator Desktop App
+# Scientific Calculator
 
-[![Latest Release](https://img.shields.io/github/v/release/Shahriyar-Rahim/calculator-vanilla-electron?label=version&color=blue)](https://github.com/Shahriyar-Rahim/calculator-vanilla-electron/releases)
-[![License: ISC](https://img.shields.io/badge/License-ISC-yellow.svg)](https://opensource.org/licenses/ISC)
-[![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Linux-lightgrey.svg)](#)
+[![Latest Release](https://img.shields.io/github/v/release/Shahriyar-Rahim/calculator-vanilla-electron?label=Release)](https://github.com/Shahriyar-Rahim/calculator-vanilla-electron/releases/latest)
+[![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Linux%20%7C%20macOS-5E81AC)](#)
+[![License: ISC](https://img.shields.io/badge/License-ISC-ffd700)](https://opensource.org/licenses/ISC)
+[![Snap Store](https://img.shields.io/badge/Snap-Scientific%20Calculator-82BEA0?logo=snapcraft)](https://snapcraft.io/scientific-calculator)
 
-A native, lightweight, and feature-rich scientific calculator built with **Electron**. Designed for efficiency with a modern UI, keyboard support, and advanced mathematical functions.
+A native desktop scientific calculator built with Electron. It is designed to feel fast, lightweight, and familiar while offering a rich set of scientific and engineering tools for everyday use.
 
----
+The project includes polished UI themes, keyboard shortcuts, calculation history, and cross-platform packaging for Windows, Linux, and macOS.
 
-## 📸 Screenshots
+## Latest release
 
-|            Light Mode             |           Dark Mode            |
-| :-------------------------------: | :----------------------------: |
-| ![Light Mode](/assets//light.png) | ![Dark Mode](/assets/dark.png) |
+The current public release is v1.1.0 and is available from the GitHub Releases page.
 
-> _Sample picture after a successfull trial_
+- Windows: `.exe` installer and portable `.zip`
+- Linux: `.deb` package and `.zip`
+- macOS: `.zip`
+- Snap package: available from Snap Store
 
----
+Download the latest release here:
 
-## ✨ Features
+https://github.com/Shahriyar-Rahim/calculator-vanilla-electron/releases
 
-- **Advanced Math Functions**: Trigonometry (sin, cos, tan), Inverse Trigonometry (asin, acos, atan), Logarithms, Square Roots, and Powers.
-- **Calculus & Tools**: Basic integration (∫dx), differentiation (d/dx), absolute values (|x|), and summation (∑).
-- **Dual Modes**: Switch between **Degree (DEG)** and **Radian (RAD)** modes.
-- **Shift Mode**: Access secondary functions easily.
-- **History Management**: Keep track of your previous calculations.
-- **Themes**: Toggle between beautiful **Light** and **Dark** modes.
-- **Audio Feedback**: Optional sound effects for button presses (can be muted).
-- **Clipboard Integration**: Copy results or paste values directly.
-- **Keyboard Support**: Fully navigable via keyboard for power users.
+## Features
 
----
+- Scientific functions including sin, cos, tan, inverse trig, logarithms, powers, square roots, and constants
+- Degree and radian modes
+- Shift mode for secondary operations
+- Calculus helpers such as integration, differentiation, absolute value, and summation
+- Calculation history panel with quick recall
+- Light and dark themes
+- Optional sound feedback for button presses
+- Clipboard copy/paste support
+- Keyboard-first input for faster use
+- Cross-platform desktop packaging via Electron
 
-## 📥 Download & Installation
+## Screenshots
 
-### Standard Installation
+| Light mode | Dark mode |
+| :---: | :---: |
+| ![Light mode](./assets/light.png) | ![Dark mode](./assets/dark.png) |
 
-1.  Go to the [Releases](https://github.com/Shahriyar-Rahim/calculator-vanilla-electron/releases) page.
-2.  Download the latest version for your OS:
-    - **Windows**: `.exe` installer or `.zip` portable.
-    - **Linux**: `.deb` package or `.AppImage`.
+## Installation
 
-### Snap Store (Linux)
+### GitHub releases
 
-The application is available on the Snap Store. You can install it using:
+1. Open the releases page:
+   https://github.com/Shahriyar-Rahim/calculator-vanilla-electron/releases
+2. Download the package that matches your platform.
+3. Install it normally on your system.
+
+### Linux via Snap
 
 ```bash
 sudo snap install scientific-calculator
 ```
 
----
+## Development
 
-## 📖 How to Use
+### Requirements
 
-- **Basic Calculations**: Click the numbers and operators or use your keyboard.
-- **Scientific Functions**: Use the buttons for `sin`, `cos`, `log`, etc.
-- **Shift Mode**: Click the **Shift** button to access secondary functions like `sin⁻¹`, `abs`, and calculus tools (`∫dx`, `d/dx`).
-- **History**: Click the clock icon (top right) or press `H` to view your calculation history. Click any history item to bring it back to the display.
-- **Theme**: Click the ☀️/🌙 icon to switch between light and dark modes.
+- Node.js
+- npm
 
----
-
-## 🤝 Contributing & Development
-
-We welcome contributions! To help improve this project:
-
-### 1. Fork and Clone
-
-1.  **Fork** the repository by clicking the "Fork" button at the top right.
-2.  Clone your fork locally:
-    ```bash
-    git clone https://github.com/YOUR_USERNAME/scientific_calculator.git
-    cd scientific_calculator
-    ```
-
-### 2. Setup Environment
-
-Ensure you have [Node.js](https://nodejs.org/) installed.
+### Install dependencies
 
 ```bash
-# Install dependencies
 npm install
+```
 
-# Run the app in development mode
+### Run locally
+
+```bash
 npm start
 ```
 
-### 3. Make Changes and Submit
-
-1.  Create a new branch: `git checkout -b feature-name`.
-2.  Commit changes: `git commit -m "Add some feature"`.
-3.  Push: `git push origin feature-name`.
-4.  Open a **Pull Request**.
-
----
-
-## 🛠️ Production & Building
-
-To package the application for production:
+## Build and package
 
 ### Windows
 
@@ -111,67 +89,56 @@ npm run package-win
 npm run package-linux
 ```
 
-### Snap Package (Linux)
-
-To build the snap package, ensure you have `snapcraft` installed:
-
-1.  Package the app for Linux first: `npm run package-linux`.
-2.  Build the snap:
-    ```bash
-    snapcraft
-    ```
-
-This will generate a `.snap` file in the root directory.
-
-### Create Installers (via Electron Forge)
+### Create installers with Electron Forge
 
 ```bash
 npm run make
 ```
 
-Installers will be generated in the `out/make` directory.
+This generates distributable artifacts for the configured platforms.
 
----
+## Keyboard shortcuts
 
-## ⌨️ Keyboard Shortcuts
+| Key | Action |
+| :--- | :--- |
+| 0-9 / . | Enter numbers and decimal values |
+| + / - / * / / | Basic arithmetic operators |
+| ^ | Power operation |
+| Enter / = | Calculate result |
+| Backspace | Delete last digit |
+| Esc | Clear all |
+| ( / ) | Parentheses |
+| S / C / T | Sin / Cos / Tan |
+| R | Square root |
+| L | Logarithm |
+| P | Pi |
+| H | Toggle history |
+| Ctrl + C | Copy result |
+| Ctrl + V | Paste value |
 
-| Key                | Action                  |
-| :----------------- | :---------------------- |
-| `0-9` / `.`        | Input Numbers / Decimal |
-| `+`, `-`, `*`, `/` | Basic Operators         |
-| `^`                | Power (x^y)             |
-| `Enter` / `=`      | Calculate Result        |
-| `Backspace`        | Delete Last Digit       |
-| `Esc`              | Clear All               |
-| `(` / `)`          | Parentheses             |
-| `S`, `C`, `T`      | Sin, Cos, Tan           |
-| `R`                | Square Root             |
-| `L`                | Logarithm               |
-| `P`                | Pi (π)                  |
-| `H`                | Toggle History          |
-| `Ctrl + C`         | Copy Result             |
-| `Ctrl + V`         | Paste Value             |
+## Project structure
 
----
+- `main.js` — Electron main process and window setup
+- `preload.js` — secure bridge for app communication
+- `renderer/` — UI logic, views, and styles
+- `assets/` — application images and icon assets
+- `forge.config.js` — package and maker configuration
 
-## 📦 Project Structure
+## License
 
-- `main.js`: Main process configuration and window management.
-- `preload.js`: Secure bridge between the main process and renderer.
-- `renderer/`: Contains the UI logic, styles, and HTML.
-- `assets/`: Icons and application images.
-- `forge.config.js`: Configuration for Electron Forge packaging.
+This project is licensed under the ISC License.
 
----
+## Author
 
-## 📄 License
+Md. Shahriyar Rahim
 
-This project is licensed under the **ISC License**.
+- GitHub: https://github.com/Shahriyar-Rahim
 
----
+## Release history
 
-## 👨‍💻 Author
+- v1.1.0 — current stable release
+- v1.0.3 — maintenance update
+- v1.0.2 — maintenance update
+- v1.0.1 — initial packaged release
+- v1.1.0-beta.1 — preview release
 
-**Md. Shahriyar Rahim**
-
-- GitHub: [@ShahriyarRahim](https://github.com/Shahriyar-Rahim)
